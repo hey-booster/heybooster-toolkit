@@ -10,29 +10,34 @@ pip3 install heybooster_toolkit
 
 **Example:**
 ```python
-from mongo_db_helper import MongoDBHelper
+from heybooster_toolkit.helpers.database.mongodb import MongoDBHelper
 
 
-URI = "database_uri"
 NAME = "database_name"
+URI = "database_uri"
 
 with MongoDBHelper(uri=URI, database=NAME) as db:
-    result = db.find_one('user', query={'email': 'user@email.com'})
-    print(result)
+    result = db.find_one('test_collection', query={'email': 'test@email.com'})
+    result = db.find('test_collection', query={'email': 'test@email.com'})
+    db.insert('test_collection', query={'email': 'test@email.com'})
+    db.insert('test_collection', query={'email': 'test@email.com'})
+    db.find_and_modify('test_collection', query={'email': 'test@email.com'}, update={"$set": 'test2@gmail.com'})
+
 ```
 
 or
 
 ```python
-from mongo_db_helper import MongoDBHelper
+from heybooster_toolkit.helpers.database.mongodb import MongoDBHelper
 
 
-URI = "database_uri"
 NAME = "database_name"
+URI = "database_uri"
 
 db = MongoDBHelper(uri=URI, database=NAME)
-result = db.find_one('user', query={'email': 'user@email.com'})
-print(result)
+result = db.find_one('test_collection', query={'email': 'test@email.com'})
+
 db.close()
+print(result)
 ```
 
