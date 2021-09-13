@@ -114,4 +114,4 @@ class MongoDBHelper:
         """
         This function call __exit__ function for close mongo connection
         """
-        return MongoDBHelper.__exit__(self)
+        return self.__exit__
