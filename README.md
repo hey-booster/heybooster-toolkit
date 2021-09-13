@@ -3,7 +3,7 @@
 
 **Installation:**
 ```shell
-pip3 install heybooster-toolkit
+pip3 install heybooster_toolkit
 ```
 
 ---

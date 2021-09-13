@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="heybooster-toolkit",
+    name="heybooster_toolkit",
     version="0.0.1",
     author="Heybooster",
     author_email="hey@heybooster.ai",
@@ -20,7 +20,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
+    package_dir={"": "heybooster_toolkit"},
+    packages=setuptools.find_packages(where="heybooster_toolkit"),
     python_requires=">=3.6",
 )

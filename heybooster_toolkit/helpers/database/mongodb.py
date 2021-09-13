@@ -19,12 +19,10 @@ class MongoDBHelper:
         """
         return self
 
-    def __exit__(self, exc_type, exc_value, trace):
+    def __exit__(self, **kwargs):
         """
         This function connection close when context manager end
-        :param exc_type:
-        :param exc_value:
-        :param trace:
+        :param kwargs:
         :return:
         """
         try:
@@ -52,7 +50,7 @@ class MongoDBHelper:
         """
         return self._database[collection].insert_one(data)
 
-    def find_one(self, collection: str, query: dict, projection: dict = {}) -> dict:
+    def find_one(self, collection: str, query: dict, projection: dict = {}, default: object = None) -> dict:
         """
         This function get query result in collection
         :param collection: str
@@ -66,14 +64,18 @@ class MongoDBHelper:
             else:
                 return self._database[collection].find_one(query)
         except Exception as e:
-            return e
+            if default:
+                return default
 
-    def find(self, collection: str, query: dict, projection: dict = {}) -> list:
+            raise Exception(e)
+
+    def find(self, collection: str, query: dict, projection: dict = {}, default: object = None) -> list:
         """
         This function list query results in collection
         :param collection: str
         :param query: dict
         :param projection: dict
+        :param: default Object
         :return: list
         """
         try:
@@ -82,9 +84,12 @@ class MongoDBHelper:
             else:
                 return self._database[collection].find(query)
         except Exception as e:
-            return e
+            if default:
+                return default
 
-    def find_and_modify(self, collection: str, query: dict, **kwargs) -> list:
+            raise Exception(e)
+
+    def find_and_modify(self, collection: str, query: dict, default: object = None, **kwargs) -> list:
         """
         This function find and modify data in collection
         :param collection: 
@@ -100,10 +105,13 @@ class MongoDBHelper:
                 full_response=True
             )
         except Exception as e:
-            return e
+            if default:
+                return default
+
+            raise Exception(e)
 
     def close(self):
         """
         This function call __exit__ function for close mongo connection
         """
-        return MongoDBHelper.__exit__()
+        return MongoDBHelper.__exit__(self)
