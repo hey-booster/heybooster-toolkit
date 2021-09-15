@@ -15,4 +15,3 @@ class AuthenticationError(Exception):
 class SendProcessFailureError(Exception):
     def __str__(self) -> str:
         return 'Email sending procedure failed.'
-        

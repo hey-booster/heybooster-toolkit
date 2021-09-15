@@ -141,4 +141,3 @@ class SendPulse:
             }}).json()
         except:
             raise SendProcessFailureError
-    
