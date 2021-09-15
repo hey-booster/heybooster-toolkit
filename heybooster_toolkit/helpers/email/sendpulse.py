@@ -1,5 +1,6 @@
 import requests
-from utils import HTTPMethods, AuthenticationError, UnhandledResponseError, CredentialsError
+from utils import HTTPMethods, AuthenticationError, SendProcessFailureError
+from statics import BASE_URL, ACCESS_URL_PATH, SMTP_URL_PATH
 
 class SendPulse:
     """ SendPulse SMTP API """
@@ -9,7 +10,6 @@ class SendPulse:
             :client_id:     string, SendPulse client id
             :client_secret: string, SendPulse client secret key
         """
-        self._base_url = 'https://api.sendpulse.com/'
         self._client_id = client_id
         self._client_secret = client_secret
         self._access_token = self.__get_access_token()
@@ -23,10 +23,19 @@ class SendPulse:
 
             return concanated url
         """
-        return self._base_url + path
+        return BASE_URL + path
 
 
-    def __perform_request(self, path: str, http_method: HTTPMethods, params: dict={}, json: dict={}, use_access_token: bool=True, retry: bool=True) -> dict:
+    def __get_header(self, use_access_token: bool=True):
+        """
+            Returns needed header
+
+            return dict
+        """
+        return {'Authorization': 'Bearer ' + self._access_token} if use_access_token else {}
+
+
+    def __perform_request(self, path: str, http_method: HTTPMethods, params: dict={}, body: dict={}, use_access_token: bool=True) -> dict:
         """
             Sends request and refreshes access_token if necessary 
 
@@ -40,29 +49,23 @@ class SendPulse:
             return response body from Sendpulse
         """
         request = getattr(requests, http_method.name)
-        response = request(
+
+        return request(
             url=self.get_url(path),
-            headers={'Authorization': 'Bearer ' + self._access_token} if use_access_token else {},
+            headers=self.__get_header(use_access_token=use_access_token),
             params=params,
-            json=json
+            json=body
         )
 
-        if response.status_code == 200:
-            return response.json()
-        elif response.status_code == 401:
-            if retry:
-                self._access_token = self.__get_access_token()
-                
-                return self.__perform_request(path, http_method, params, json, use_access_token, False)
-            else:
-                raise AuthenticationError
-        elif response.status_code == 422:
-            return response.json()
-        else:
-            raise UnhandledResponseError
+    
+    def refresh_token(self):
+        """
+            Gets new access token
+        """
+        self._access_token = self.__get_access_token()
 
 
-    def __get_access_token(self, path: str='oauth/access_token') -> str:
+    def __get_access_token(self) -> str:
         """
             Gets access token
 
@@ -70,16 +73,16 @@ class SendPulse:
 
             return str, access token
         """
-        response = requests.post(self.get_url(path), json={
+        response = self.__perform_request(path=ACCESS_URL_PATH, http_method=HTTPMethods.post, use_access_token=False, body={
             'grant_type': 'client_credentials',
             'client_id': self._client_id,
             'client_secret': self._client_secret,
         })
-        
+
         if response.status_code == 200:
             return response.json()['access_token']
         else:
-            raise CredentialsError('Check your credentials.')
+            raise AuthenticationError
 
 
     def send_email_with_template(self, subject: str, template_id: str, variables: dict, from_name: str, from_email: str, to_data: list):
@@ -95,18 +98,21 @@ class SendPulse:
 
             return response body from Sendpulse
         """
-        return self.__perform_request('smtp/emails', HTTPMethods.post, json={'email': {
-            'subject': subject,
-            'template': {
-                'id': template_id,
-                'variables': variables
-            },
-            'from': {
-                'name': from_name,
-                'email': from_email
-            },
-            'to': to_data
-        }})
+        try:
+            return self.__perform_request(path=SMTP_URL_PATH, http_method=HTTPMethods.post, body={'email': {
+                'subject': subject,
+                'template': {
+                    'id': template_id,
+                    'variables': variables
+                },
+                'from': {
+                    'name': from_name,
+                    'email': from_email
+                },
+                'to': to_data
+            }}).json()
+        except:
+            raise SendProcessFailureError
 
 
     def send_email(self, subject: str, html: str, text: str, from_name: str, from_email: str, to_data: list):
@@ -122,13 +128,16 @@ class SendPulse:
 
             return response body from Sendpulse
         """
-        return self.__perform_request('smtp/emails', HTTPMethods.post, json={'email': {
-            'subject': subject,
-            'html': html,
-            'text': text,
-            'from': {
-                'name': from_name,
-                'email': from_email
-            },
-            'to': to_data
-        }})
+        try:
+            return self.__perform_request(path=SMTP_URL_PATH, http_method=HTTPMethods.post, body={'email': {
+                'subject': subject,
+                'html': html,
+                'text': text,
+                'from': {
+                    'name': from_name,
+                    'email': from_email
+                },
+                'to': to_data
+            }}).json()
+        except:
+            raise SendProcessFailureError

@@ -8,12 +8,10 @@ class HTTPMethods(Enum):
 
 
 class AuthenticationError(Exception):
-    pass
+    def __str__(self) -> str:
+        return 'Your credentials invalid. Check your credentials.'
 
 
-class CredentialsError(Exception):
-    pass
-
-
-class UnhandledResponseError(Exception):
-    pass
+class SendProcessFailureError(Exception):
+    def __str__(self) -> str:
+        return 'Email sending procedure failed.'
