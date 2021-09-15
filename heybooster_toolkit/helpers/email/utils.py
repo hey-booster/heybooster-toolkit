@@ -1,10 +1,10 @@
 from enum import Enum
 
 class HTTPMethods(Enum):
-    DELETE = 0
-    GET = 1
-    POST = 2
-    PUT = 3
+    delete = 0
+    get = 1
+    post = 2
+    put = 3
 
 
 class AuthenticationError(Exception):
@@ -15,7 +15,7 @@ class CredentialsError(Exception):
     pass
 
 
-class InvalidResponseError(Exception):
+class UnhandledResponseError(Exception):
     pass
 
 
