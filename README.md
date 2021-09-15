@@ -10,7 +10,7 @@ pip3 install heybooster_toolkit
 
 **Example:**
 ```python
-from heybooster_toolkit.helpers.database.mongodb import MongoDBHelper
+from heybooster.helpers.database.mongodb import MongoDBHelper
 
 
 NAME = "database_name"
@@ -28,7 +28,7 @@ with MongoDBHelper(uri=URI, database=NAME) as db:
 or
 
 ```python
-from heybooster_toolkit.helpers.database.mongodb import MongoDBHelper
+from heybooster.helpers.database.mongodb import MongoDBHelper
 
 
 NAME = "database_name"

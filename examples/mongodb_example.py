@@ -1,4 +1,4 @@
-from heybooster_toolkit.helpers.database.mongodb import MongoDBHelper
+from heybooster.helpers.database.mongodb import MongoDBHelper
 
 NAME = "database_name"
 URI = "database_uri"
