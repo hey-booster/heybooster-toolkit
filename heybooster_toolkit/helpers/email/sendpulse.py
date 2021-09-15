@@ -1,5 +1,5 @@
 import requests
-from utils import HTTPMethods, AuthenticationError, UnhandledResponseError, CredentialsError, RetryLimitExceededError
+from utils import HTTPMethods, AuthenticationError, UnhandledResponseError, CredentialsError
 
 class SendPulse:
     """ SendPulse SMTP API """
@@ -52,6 +52,7 @@ class SendPulse:
         elif response.status_code == 401:
             if retry:
                 self._access_token = self.__get_access_token()
+                
                 return self.__perform_request(path, http_method, params, json, use_access_token, False)
             else:
                 raise AuthenticationError

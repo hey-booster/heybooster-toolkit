@@ -17,7 +17,3 @@ class CredentialsError(Exception):
 
 class UnhandledResponseError(Exception):
     pass
-
-
-class RetryLimitExceededError(Exception):
-    pass
