@@ -1,23 +1,17 @@
 from enum import Enum
 
 class HTTPMethods(Enum):
-    DELETE = 0
-    GET = 1
-    POST = 2
-    PUT = 3
+    delete = 0
+    get = 1
+    post = 2
+    put = 3
 
 
 class AuthenticationError(Exception):
-    pass
+    def __str__(self) -> str:
+        return 'Your credentials invalid. Check your credentials.'
 
 
-class CredentialsError(Exception):
-    pass
-
-
-class InvalidResponseError(Exception):
-    pass
-
-
-class RetryLimitExceededError(Exception):
-    pass
+class SendProcessFailureError(Exception):
+    def __str__(self) -> str:
+        return 'Email sending procedure failed.'
