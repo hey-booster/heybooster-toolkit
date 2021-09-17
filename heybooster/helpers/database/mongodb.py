@@ -89,7 +89,7 @@ class MongoDBHelper:
 
             raise Exception(e)
 
-    def find_and_modify(self, collection: str, query: dict, default: object = None, **kwargs) -> list:
+    def find_and_modify(self, collection: str, query: dict, **kwargs) -> list:
         """
         This function find and modify data in collection
         :param collection: 
@@ -105,9 +105,6 @@ class MongoDBHelper:
                 full_response=True
             )
         except Exception as e:
-            if default:
-                return default
-
             raise Exception(e)
 
     def close(self):
