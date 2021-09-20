@@ -155,12 +155,3 @@ class MongoDBHelper:
         This function call __exit__ function for close mongo connection
         """
         return self.__exit__
-
-
-filterPipeline = [
-    {
-        "$match": {
-            "package": "brand-visibility"
-        }
-    }
-]
