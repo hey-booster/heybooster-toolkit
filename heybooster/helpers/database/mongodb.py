@@ -1,4 +1,5 @@
 import pymongo
+from pymongo.command_cursor import CommandCursor
 
 
 class MongoDBHelper:
@@ -107,8 +108,59 @@ class MongoDBHelper:
         except Exception as e:
             raise Exception(e)
 
+    def aggregate(self, collection: str, pipeline: list, options: dict = {},
+                  default: object = None) -> CommandCursor:
+        """
+        This function aggregations in mongodb
+        :param pipeline:
+        :param options:
+        :return object:
+        """
+        try:
+            if bool(options):
+                return self._database[collection].aggregate(pipeline, options)
+            else:
+                return self._database[collection].aggregate(pipeline)
+        except Exception as e:
+            if default:
+                return default
+            raise Exception(e)
+
+    def remove(self, collection: str, query: dict):
+        """
+        This function delete data in collection
+        :param collection:
+        :param data:
+        :return:object
+        """
+        try:
+            self._database[collection].remove(query)
+        except Exception as e:
+            raise Exception(e)
+
+    def update(self, collection: str, query: dict, update: dict) -> object:
+        """
+        This function update data in collection
+        :param collection:
+        :param update:
+        :return:object
+        """
+        try:
+            return self._database[collection].update(query)
+        except Exception as e:
+            raise Exception(e)
+
     def close(self):
         """
         This function call __exit__ function for close mongo connection
         """
         return self.__exit__
+
+
+filterPipeline = [
+    {
+        "$match": {
+            "package": "brand-visibility"
+        }
+    }
+]
