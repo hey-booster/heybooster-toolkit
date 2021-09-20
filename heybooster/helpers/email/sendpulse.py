@@ -1,6 +1,6 @@
 import requests
-from utils import HTTPMethods, AuthenticationError, SendProcessFailureError
-from statics import BASE_URL, ACCESS_URL_PATH, SMTP_URL_PATH
+from .utils import HTTPMethods, AuthenticationError, SendProcessFailureError
+from .statics import BASE_URL, ACCESS_URL_PATH, SMTP_URL_PATH
 
 class SendPulse:
     """ SendPulse SMTP API """
