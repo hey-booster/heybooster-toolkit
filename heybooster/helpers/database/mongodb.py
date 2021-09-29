@@ -146,7 +146,7 @@ class MongoDBHelper:
         :return:object
         """
         try:
-            return self._database[collection].update(query)
+            return self._database[collection].update(query, update)
         except Exception as e:
             raise Exception(e)
 
