@@ -9,6 +9,7 @@ class MongoDBHelper:
         """
         Init Function
         :param kwargs:
+        :return:
         """
         self.client = pymongo.MongoClient(kwargs['uri'])
         self._database = getattr(self.client, kwargs['database'])
