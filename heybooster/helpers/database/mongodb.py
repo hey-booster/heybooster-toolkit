@@ -127,6 +127,18 @@ class MongoDBHelper:
                 return default
             raise Exception(e)
 
+    def remove(self, collection: str, query: dict):
+        """
+        This function delete data in collection
+        :param collection:
+        :param query:
+        :return:object
+        """
+        try:
+            self._database[collection].remove(query)
+        except Exception as e:
+            raise Exception(e)
+
     def delete_many(self, collection: str, query: dict):
         """
         This function delete many data in collection
