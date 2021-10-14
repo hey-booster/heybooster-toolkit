@@ -9,6 +9,7 @@ class MongoDBHelper:
         """
         Init Function
         :param kwargs:
+        :return:
         """
         self.client = pymongo.MongoClient(kwargs['uri'])
         self._database = getattr(self.client, kwargs['database'])
@@ -130,7 +131,7 @@ class MongoDBHelper:
         """
         This function delete data in collection
         :param collection:
-        :param data:
+        :param query:
         :return:object
         """
         try:
@@ -138,10 +139,35 @@ class MongoDBHelper:
         except Exception as e:
             raise Exception(e)
 
+    def delete_many(self, collection: str, query: dict):
+        """
+        This function delete many data in collection
+        :param collection:
+        :param query:
+        :return:object
+        """
+        try:
+            self._database[collection].delete_many(query)
+        except Exception as e:
+            raise Exception(e)
+
+    def delete_one(self, collection: str, query: dict):
+        """
+        This function delete data in collection
+        :param collection:
+        :param query:
+        :return:object
+        """
+        try:
+            self._database[collection].delete_one(query)
+        except Exception as e:
+            raise Exception(e)
+
     def update(self, collection: str, query: dict, update: dict) -> object:
         """
         This function update data in collection
         :param collection:
+        :param query:
         :param update:
         :return:object
         """
