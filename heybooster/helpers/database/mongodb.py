@@ -21,7 +21,7 @@ class MongoDBHelper:
         """
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, **kwargs):
         """
         This function connection close when context manager end
         :param kwargs:
