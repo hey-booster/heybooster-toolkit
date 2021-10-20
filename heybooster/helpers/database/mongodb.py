@@ -52,7 +52,7 @@ class MongoDBHelper:
         """
         return self._database[collection].insert_one(data)
 
-    def find_one(self, collection: str, query: dict, projection: dict = {}, default: object = None) -> dict:
+    def find_one(self, collection: str, query: dict, projection: dict = {}, default: object = None, **kwargs) -> dict:
         """
         This function get query result in collection
         :param collection: str
@@ -62,29 +62,29 @@ class MongoDBHelper:
         """
         try:
             if bool(projection):
-                return self._database[collection].find_one(query, projection)
+                return self._database[collection].find_one(query, projection, **kwargs)
             else:
-                return self._database[collection].find_one(query)
+                return self._database[collection].find_one(query, **kwargs)
         except Exception as e:
             if default:
                 return default
 
             raise Exception(e)
 
-    def find(self, collection: str, query: dict, projection: dict = {}, default: object = None) -> list:
+    def find(self, collection: str, query: dict, projection: dict = {}, default: object = None, **kwargs) -> list:
         """
         This function list query results in collection
         :param collection: str
         :param query: dict
         :param projection: dict
-        :param: default Object
+        :param: default: Object
         :return: list
         """
         try:
             if bool(projection):
-                return self._database[collection].find(query, projection)
+                return self._database[collection].find(query, projection, **kwargs)
             else:
-                return self._database[collection].find(query)
+                return self._database[collection].find(query, **kwargs)
         except Exception as e:
             if default:
                 return default
@@ -109,12 +109,13 @@ class MongoDBHelper:
         except Exception as e:
             raise Exception(e)
 
-    def aggregate(self, collection: str, pipeline: list, options: dict = {},
-                  default: object = None) -> CommandCursor:
+    def aggregate(self, collection: str, pipeline: list, options: dict = {}, default: object = None) -> CommandCursor:
         """
         This function aggregations in mongodb
+        :param collection:
         :param pipeline:
         :param options:
+        :param default:
         :return object:
         """
         try:
