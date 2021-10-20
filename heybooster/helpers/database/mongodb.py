@@ -177,6 +177,19 @@ class MongoDBHelper:
         except Exception as e:
             raise Exception(e)
 
+    def update_many(self, collection: str, query: dict, update: dict) -> object:
+        """
+        This function update many data in collection
+        :param collection:
+        :param query:
+        :param update:
+        :return:object
+        """
+        try:
+            return self._database[collection].update_many(query, update)
+        except Exception as e:
+            raise Exception(e)
+
     def close(self):
         """
         This function call __exit__ function for close mongo connection
