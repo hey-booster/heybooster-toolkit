@@ -25,7 +25,10 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'pymongo==3.10.1'
+        'pymongo==3.10.1',
+        'requests',
+        'raven==6.10.0'
+
     ],
     python_requires=">=3.6",
 )
