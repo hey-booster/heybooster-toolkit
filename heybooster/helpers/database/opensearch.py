@@ -98,3 +98,12 @@ class OpenSearchHelper:
             return response
         except Exception as exception:
             raise Exception(exception)
+
+    def get(self, payload: dict = {}):
+        """
+        This function is return data for payload
+        """
+        try:
+            return requests.get(url=self.get_url(path="_search"), json=payload, auth=self.auth)
+        except Exception as e:
+            raise Exception(e)
