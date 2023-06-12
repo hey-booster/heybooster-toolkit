@@ -38,7 +38,7 @@ class OpenSearchHelper:
             headers={
                 "Content-Type": "application/json"
             },
-            data=json.dumps(payload)
+            json=payload
         )
 
         if response.status_code != expected_status:
