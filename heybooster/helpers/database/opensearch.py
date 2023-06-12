@@ -86,13 +86,31 @@ class OpenSearchHelper:
         This function returns search response
         """
         try:
-            params = [f"{key}:{value}" for key, value in kwargs.items()]
-            path = f"_search?q={','.join(params)}&size={size}&sort={sort}"
+            path = f"_search"
             url = self.get_url(path=path)
+            sort_key = sort.split(":")[0]
+            sort_order = sort.split(":")[1]
+
+            payload = {
+                "sort": [
+                    {
+                        sort_key: {
+                            "order": sort_order
+                        }
+                    }
+                ],
+                "size": size,
+                "query": {
+                    "match": {
+                        **kwargs
+                    }
+                }
+            }
 
             response = self.__perform_request(
                 method=OpenSearchHelper.GET,
                 url=url,
+                payload=payload,
             )
 
             return response
