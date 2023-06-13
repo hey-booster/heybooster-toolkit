@@ -2,6 +2,7 @@ import requests
 from .utils import HTTPMethods, AuthenticationError, SendProcessFailureError
 from .statics import BASE_URL, ACCESS_URL_PATH, SMTP_URL_PATH
 
+
 class SendPulse:
     """ SendPulse SMTP API """
 
@@ -14,8 +15,7 @@ class SendPulse:
         self._client_secret = client_secret
         self._access_token = self.__get_access_token()
 
-
-    def get_url(self, path: str=''):
+    def get_url(self, path: str = ''):
         """
             Concanates path and url
 
@@ -25,8 +25,7 @@ class SendPulse:
         """
         return BASE_URL + path
 
-
-    def __get_header(self, use_access_token: bool=True):
+    def __get_header(self, use_access_token: bool = True):
         """
             Returns needed header
 
@@ -34,8 +33,7 @@ class SendPulse:
         """
         return {'Authorization': 'Bearer ' + self._access_token} if use_access_token else {}
 
-
-    def __perform_request(self, path: str, http_method: HTTPMethods, params: dict={}, body: dict={}, use_access_token: bool=True) -> dict:
+    def __perform_request(self, path: str, http_method: HTTPMethods, params: dict = {}, body: dict = {}, use_access_token: bool = True) -> dict:
         """
             Sends request and refreshes access_token if necessary 
 
@@ -57,13 +55,11 @@ class SendPulse:
             json=body
         )
 
-    
     def refresh_token(self):
         """
             Gets new access token
         """
         self._access_token = self.__get_access_token()
-
 
     def __get_access_token(self) -> str:
         """
@@ -83,7 +79,6 @@ class SendPulse:
             return response.json()['access_token']
         else:
             raise AuthenticationError
-
 
     def send_email_with_template(self, subject: str, template_id: str, variables: dict, from_name: str, from_email: str, to_data: list):
         """
@@ -113,7 +108,6 @@ class SendPulse:
             }}).json()
         except:
             raise SendProcessFailureError
-
 
     def send_email(self, subject: str, html: str, text: str, from_name: str, from_email: str, to_data: list):
         """
