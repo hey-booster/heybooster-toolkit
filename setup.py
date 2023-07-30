@@ -28,6 +28,7 @@ setuptools.setup(
         'pymongo==3.10.1',
         'requests',
         'raven==6.10.0'
+        'boto3==1.28.15'
     ],
     python_requires=">=3.6",
 )
