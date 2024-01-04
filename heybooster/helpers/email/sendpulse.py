@@ -109,6 +109,21 @@ class SendPulse:
         except:
             raise SendProcessFailureError
 
+    def get_information_for_a_list_of_email(self, emails: list):
+        """
+            Gets information for a list of email
+
+            :emails: list, list of emails
+
+            return response body from Sendpulse
+        """
+        if len(emails) > 500:
+            raise ValueError('Maximum number of emails is 500')
+
+        path = SMTP_URL_PATH + "/info"
+
+        return self.__perform_request(path=path, http_method=HTTPMethods.post, body={'emails': emails}).json()
+
     def send_email(self, subject: str, html: str, text: str, from_name: str, from_email: str, to_data: list):
         """
             Sends email by using templates on Sendpulse
